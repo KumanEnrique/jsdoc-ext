@@ -33,32 +33,16 @@ function getReturns(text) {
  */
 function getParameters(text) {
     var paramList = [];
-console.log(text)
     if (text.charAt(0) === '(') {
-        var keys = text.match(/\$[\w_-]+/g);
-        console.log(keys)
-        var i = 0;
-        for (const key in keys) {
-            if (keys.hasOwnProperty(key)) {
-                const name = keys[key];
-                var clean = text
-                    .substring(1, text.indexOf(')'))
-                    .split(',')[i]
-                    .trim()
-                    .split(/\s/g)[0];
-                var type = '';
-                if (clean === 'string' || 
-                    clean === 'int'    || 
-                    clean === 'float'  ||
-                    clean === 'bool'   || 
-                    clean === 'array') {
-                        type += clean;
-                } else {
-                    type = 'any';
-                }
-                paramList.push(new paramDeclaration(name, type));
+        let textClean = text.slice(1).slice(0,text.length-2)
+        const params = textClean.split(",")
+        for(const param in params){
+            const name = params[param].split(":")[0]
+            let type = params[param].split(":")[1]
+            if (type === "boolean" || type === "number" || type === "string" || type === "[]"){
+                // type
             }
-            i++;
+            paramList.push(new paramDeclaration(name, type) )
         }
     }
     return paramList;
@@ -107,9 +91,8 @@ function comment(selectedText) {
     var params = getParameters(selectedText);
     var functionName = getFunctionName(fullLine);
     var textToInsert = getComment(params, returnText, functionName);
-    console.log("comment")
     return textToInsert;
 }
 exports.comment = comment;
-// console.log(comment("function employee(id:number,name:string)") )
+console.log(comment("function employee(id:number,name:[])") )
 // console.log(comment("function sas(string $asff,$dfxx)") )
