@@ -15,15 +15,15 @@ var paramDeclaration = (function () {
  * @param {string} text
  */
 function getReturns(text) {
-    var returnText = '';
+    let returnText = '';
     text = text.replace(/\s/g, '');
-    var lastIndex = text.lastIndexOf(':');
-    var lastBrace = text.lastIndexOf(')');
+    let lastIndex = text.lastIndexOf(':');
+    let lastBrace = text.lastIndexOf(')');
     if (lastIndex > lastBrace) {
         //we have a return type
         //read to end of string
-        var index = lastIndex + 1;
-        var splicedText = text.slice(index, text.length);
+        let index = lastIndex + 1;
+        let splicedText = text.slice(index, text.length);
         returnText = splicedText.match(/[a-zA-Z][a-zA-Z0-9$_\\]*/).toString();
     }
     return returnText;
@@ -32,7 +32,7 @@ function getReturns(text) {
  * @param {string} text
  */
 function getParameters(text) {
-    var paramList = [];
+    let paramList = [];
     if (text.charAt(0) === '(') {
         let textClean = text.slice(1).slice(0,text.length-2)
         const params = textClean.split(",")
@@ -51,8 +51,8 @@ function getParameters(text) {
  * @param {string} text
  */
 function getFunctionName(text) {
-    var matches = /function\s+([\w_-]+)/.exec(text);
-    var functionName = matches[1];
+    let matches = /function\s+([\w_-]+)/.exec(text);
+    let functionName = matches[1];
     return functionName;
 }
 /**
@@ -61,7 +61,7 @@ function getFunctionName(text) {
  * @param {string} functionName
  */
 function getComment(paramList, returnText, functionName) {
-    var textToInsert = "";
+    let textToInsert = "";
     textToInsert = textToInsert + '/**\n * ' + functionName + '\n *\n *';
 
     paramList.forEach(function (element) {
@@ -83,14 +83,14 @@ function getComment(paramList, returnText, functionName) {
  * @param {string} selectedText
  */
 function comment(selectedText) {
-    var fullLine = selectedText;
-    var firstBraceIndex = selectedText.indexOf('(');
+    let fullLine = selectedText;
+    let firstBraceIndex = selectedText.indexOf('(');
     selectedText = selectedText.slice(firstBraceIndex);
 
-    var returnText = getReturns(selectedText);
-    var params = getParameters(selectedText);
-    var functionName = getFunctionName(fullLine);
-    var textToInsert = getComment(params, returnText, functionName);
+    let returnText = getReturns(selectedText);
+    let params = getParameters(selectedText);
+    let functionName = getFunctionName(fullLine);
+    let textToInsert = getComment(params, returnText, functionName);
     return textToInsert;
 }
 exports.comment = comment;

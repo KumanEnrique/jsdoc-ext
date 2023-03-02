@@ -9,14 +9,14 @@ function activate(context) {
 	// let disposable = vscode.commands.registerCommand('tsdocu.helloWorld', function () {
 	// 	vscode.window.showInformationMessage('Hello World from tsdocu!');
 	// });
-	let disposable = vscode.commands.registerCommand('tsdocu.helloWorld', function () {
-        var lang = vscode.window.activeTextEditor.document.languageId;
+	let disposable = vscode.commands.registerCommand('tsdocu.TsDoc', function () {
+        let lang = vscode.window.activeTextEditor.document.languageId;
         if (lang == "javascript" || lang == "typescript") {
-            var selection = vscode.window.activeTextEditor.selection;
-            var startLine = selection.start.line;
-            var selectedText = vscode.window.activeTextEditor.document.lineAt(startLine).text;
+            let selection = vscode.window.activeTextEditor.selection;
+            let startLine = selection.start.line;
+            let selectedText = vscode.window.activeTextEditor.document.lineAt(startLine).text;
 
-            var textToInsert = '';
+            let textToInsert = '';
             if (/function\s+([\w_-]+)/.exec(selectedText) != null) {
                 textToInsert = app.comment(selectedText);
             }  else {
@@ -31,8 +31,8 @@ function activate(context) {
                     textToInsert = textToInsert + '\n';
                 }
 
-                var lastCharIndex = vscode.window.activeTextEditor.document.lineAt(startLine).text.length;
-                var pos;
+                let lastCharIndex = vscode.window.activeTextEditor.document.lineAt(startLine).text.length;
+                let pos;
 
                 if ((lastCharIndex > 0) && (startLine != 0)) {
                     pos = new vscode.Position(startLine, lastCharIndex);
@@ -42,10 +42,10 @@ function activate(context) {
 
                 textToInsert = '\n' + textToInsert;
 
-                var line = vscode.window.activeTextEditor.document.lineAt(selection.start.line).text;
-                var firstNonWhiteSpace = vscode.window.activeTextEditor.document.lineAt(selection.start.line).firstNonWhitespaceCharacterIndex;
-                var stringToIndent = '';
-                for (var i = 0; i < firstNonWhiteSpace; i++) {
+                let line = vscode.window.activeTextEditor.document.lineAt(selection.start.line).text;
+                let firstNonWhiteSpace = vscode.window.activeTextEditor.document.lineAt(selection.start.line).firstNonWhitespaceCharacterIndex;
+                let stringToIndent = '';
+                for (let i = 0; i < firstNonWhiteSpace; i++) {
                     if (line.charAt(i) == '\t') {
                         stringToIndent = stringToIndent + '\t';
                     } else if (line.charAt(i) == ' ') {

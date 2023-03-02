@@ -11,22 +11,22 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/KumanEnrique/generador-de-contrase-as"
+    "url": "https://github.com/KumanEnrique"
   },
   "activationEvents": [
-    "onCommand:tsdocu.helloWorld"
+    "onCommand:tsdocu.TsDoc"
   ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "tsdocu.helloWorld",
+        "command": "tsdocu.TsDoc",
         "title": "Add tsDoc"
       }
     ],
     "keybindings": [
       {
-          "command": "tsdocu.helloWorld",
+          "command": "tsdocu.TsDoc",
           "key": "ctrl+shift+f",
           "when": "editorTextFocus"
       }
@@ -34,7 +34,7 @@
     "menus": {
       "editor/context": [
           {
-              "command": "tsdocu.helloWorld",
+              "command": "tsdocu.TsDoc",
               "when": "resourceLangId == typescript || resourceLangId == javascript"
           }
       ]
