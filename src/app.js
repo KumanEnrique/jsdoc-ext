@@ -1,49 +1,51 @@
-var paramDeclaration = (function () {
+class paramDeclaration{
     /**
      * @param {string} paramName
      * @param {string} paramType
      */
-    function paramDeclaration(paramName, paramType) {
+    constructor(paramName, paramType) {
         this.paramName = paramName;
         this.paramType = paramType;
         this.paramName = paramName;
         this.paramType = paramType;
     }
-    return paramDeclaration;
-})();
+}
 /**
  * @param {string} text
  */
-function getReturns(text) {
-    let returnText = '';
-    text = text.replace(/\s/g, '');
-    let lastIndex = text.lastIndexOf(':');
-    let lastBrace = text.lastIndexOf(')');
-    if (lastIndex > lastBrace) {
-        //we have a return type
-        //read to end of string
-        let index = lastIndex + 1;
-        let splicedText = text.slice(index, text.length);
-        returnText = splicedText.match(/[a-zA-Z][a-zA-Z0-9$_\\]*/).toString();
+function getReturns(text){
+    let returnText = ""
+    const parenthesis = text.indexOf(")")
+    if(text[parenthesis + 1] == ":"){
+        const beginReturn = parenthesis + 1
+        const beginBody = text.indexOf("{")
+        returnText = text.slice(beginReturn + 1,beginBody)
+        returnText = returnText.trim()
+        return returnText
+    }else{
+        return "void"
     }
-    return returnText;
 }
 /**
  * @param {string} text
  */
 function getParameters(text) {
     let paramList = [];
-    if (text.charAt(0) === '(') {
-        let textClean = text.slice(1).slice(0,text.length-2)
-        const params = textClean.split(",")
-        for(const param in params){
-            const name = params[param].split(":")[0]
-            let type = params[param].split(":")[1]
-            if (type === "boolean" || type === "number" || type === "string" || type === "[]"){
-                // type
+    let endParenthesis = text.slice(0,text.indexOf(")") + 1)
+    let paraa = endParenthesis.slice(1,-1).split(",")
+    if(paraa[0] != ""){
+        for (let param in paraa){
+            if(paraa[param].includes(":") ){
+                const type = paraa[param].split(":")[1]
+                const name = paraa[param].split(":")[0]
+                paramList.push(new paramDeclaration(name,type))
+            }else{
+                const name = paraa[param]
+                paramList.push(new paramDeclaration(name,null))
             }
-            paramList.push(new paramDeclaration(name, type) )
         }
+    }else{
+        paraa
     }
     return paramList;
 }
@@ -62,12 +64,16 @@ function getFunctionName(text) {
  */
 function getComment(paramList, returnText, functionName) {
     let textToInsert = "";
-    textToInsert = textToInsert + '/**\n * ' + functionName + '\n *\n *';
+    textToInsert = textToInsert + '/**\n * @ ' + functionName + '\n *\n *';
 
     paramList.forEach(function (element) {
-        if (element.paramName != '') {
+        if (element.paramName != '' && element.paramType) {
             textToInsert = textToInsert + ' @param ';
             textToInsert = textToInsert + '{' + element.paramType + '}' + ' ';
+            textToInsert = textToInsert + element.paramName + ' description\n' + ' *';
+        }else{
+            textToInsert = textToInsert + ' @param ';
+            textToInsert = textToInsert + '{any}' + ' ';
             textToInsert = textToInsert + element.paramName + ' description\n' + ' *';
         }
     });
@@ -94,5 +100,7 @@ function comment(selectedText) {
     return textToInsert;
 }
 exports.comment = comment;
-console.log(comment("function employee(id:number,name:[])") )
-// console.log(comment("function sas(string $asff,$dfxx)") )
+console.log(comment(`function xx(id:string,name:number):string {this.id = id;this.name = name;return "";}`) )
+console.log(comment(`function sa(id:string,name:boolean) {this.id = id;this.name = name;return "";}`) )
+console.log(comment(`function cc(gf,jj) {this.id = id;this.name = name;return "";}`) )
+console.log(comment(`function jj() {this.id = id;this.name = name;return "";}`) )
