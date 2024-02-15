@@ -64,24 +64,20 @@ function getFunctionName(text) {
  */
 function getComment(paramList, returnText, functionName) {
     let textToInsert = "";
-    textToInsert = textToInsert + '/**\n * @ ' + functionName + '\n *\n *';
+    textToInsert = `${textToInsert}/**\n * @function ${functionName} description\n *\n *`;
 
     paramList.forEach(function (element) {
         if (element.paramName != '' && element.paramType) {
-            textToInsert = textToInsert + ' @param ';
-            textToInsert = textToInsert + '{' + element.paramType + '}' + ' ';
-            textToInsert = textToInsert + element.paramName + ' description\n' + ' *';
+            textToInsert += `@name ${element.paramName} description @param {${element.paramType}} ${element.paramName}\n *`;
         }else{
-            textToInsert = textToInsert + ' @param ';
-            textToInsert = textToInsert + '{any}' + ' ';
-            textToInsert = textToInsert + element.paramName + ' description\n' + ' *';
+            textToInsert += ` @name ${element.paramName} description @param {any} ${element.paramName}\n *`;
         }
     });
     if (returnText == '') {
         returnText = '{void}';
-        textToInsert = textToInsert + ' @returns ' + returnText + ' description\n' + ' */';
+        textToInsert += ` @returns ${returnText} description \n */`
     }else{
-        textToInsert = textToInsert + ' @returns {' + returnText + '}  description\n' + ' */';
+        textToInsert += ` @returns {${returnText}} description \n */`
     }
     return textToInsert;
 }
@@ -100,7 +96,7 @@ function comment(selectedText) {
     return textToInsert;
 }
 exports.comment = comment;
-console.log(comment(`function xx(id:string,name:number):string {this.id = id;this.name = name;return "";}`) )
+/* console.log(comment(`function xx(id:string,name:number):string {this.id = id;this.name = name;return "";}`) )
 console.log(comment(`function sa(id:string,name:boolean) {this.id = id;this.name = name;return "";}`) )
 console.log(comment(`function cc(gf,jj) {this.id = id;this.name = name;return "";}`) )
-console.log(comment(`function jj() {this.id = id;this.name = name;return "";}`) )
+console.log(comment(`function jj() {this.id = id;this.name = name;return "";}`) ) */

@@ -21,9 +21,7 @@ function activate(context) {
 
             // console.log({selectedText})
             let textToInsert = '';
-            if (/function\s+([\w_-]+)\((\w+\:\w+(\,)*)*\)|\((\w+(\,)*)*\)(\:\w+)*/.exec(selectedText) != null) {
-                const textClean = selectedText.match(/function\s+([\w_-]+)\((\w+\:\w+(\,)*)*\)(\:\w+)*/)
-                console.log({textClean})
+            if (/function \w+\((?:(\w+)(?:\s=\s'[^']*')?|(?:\w+)?(?:\s=\s\w+)?|\[(\w+)\]|\{(\w+)\}|\.{3}(\w+))(?:,\s(?:(\w+)(?:\s=\s'[^']*')?|(?:\w+)?(?:\s=\s\w+)?|\[(\w+)\]|\{(\w+)\}|\.{3}(\w+)))*\)(\: \w*)* \{/.exec(selectedText) != null) {
                 textToInsert = app.comment(selectedText);
                 // console.log({textToInsert})
             }  else {
