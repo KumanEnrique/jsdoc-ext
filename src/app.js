@@ -100,7 +100,3 @@ function comment(selectedText) {
     return textToInsert;
 }
 exports.comment = comment;
-console.log(comment(`function xx(id:string,name:number):string {this.id = id;this.name = name;return "";}`) )
-console.log(comment(`function sa(id:string,name:boolean) {this.id = id;this.name = name;return "";}`) )
-console.log(comment(`function cc(gf,jj) {this.id = id;this.name = name;return "";}`) )
-console.log(comment(`function jj() {this.id = id;this.name = name;return "";}`) )
