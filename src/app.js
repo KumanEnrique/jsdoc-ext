@@ -15,12 +15,9 @@ class paramDeclaration{
  */
 function getReturns(text){
     let returnText = ""
-    const parenthesis = text.indexOf(")")
-    if(text[parenthesis + 1] == ":"){
-        const beginReturn = parenthesis + 1
-        const beginBody = text.indexOf("{")
-        returnText = text.slice(beginReturn + 1,beginBody)
-        returnText = returnText.trim()
+    const palabra = /(?<=\):\s)\w+/.exec(text)
+    if(palabra){
+        returnText = palabra[0]
         return returnText
     }else{
         return "void"
@@ -41,7 +38,8 @@ function getParameters(text) {
                 paramList.push(new paramDeclaration(name,type))
             }else{
                 const name = paraa[param]
-                paramList.push(new paramDeclaration(name,null))
+                const resultado = /\w+/g.exec(name)
+                paramList.push(new paramDeclaration(resultado[0],null))
             }
         }
     }else{
@@ -73,12 +71,7 @@ function getComment(paramList, returnText, functionName) {
             textToInsert += ` @name ${element.paramName} description @param {any} ${element.paramName}\n *`;
         }
     });
-    if (returnText == '') {
-        returnText = '{void}';
-        textToInsert += ` @returns ${returnText} description \n */`
-    }else{
-        textToInsert += ` @returns {${returnText}} description \n */`
-    }
+    textToInsert += ` @returns {${returnText}} description \n */`
     return textToInsert;
 }
 /**
